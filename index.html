@@ -635,41 +635,44 @@
   document.getElementById('paypal-business').value = ['donate','openingbands.com'].join('@');
 
   const PRICE = 10.00;
-
   let qty = 1;
 
   function updatePrice() {
-    const total = (PRICE * qty).toFixed(2);
-    document.getElementById('price-display').textContent = `$${total}`;
+    document.getElementById('price-display').textContent = '$' + (PRICE * qty).toFixed(2);
   }
 
-  document.getElementById('qty-minus').addEventListener('click', () => {
+  document.getElementById('qty-minus').addEventListener('click', function() {
     if (qty > 1) { qty--; document.getElementById('qty-display').value = qty; updatePrice(); }
   });
-  document.getElementById('qty-plus').addEventListener('click', () => {
+  document.getElementById('qty-plus').addEventListener('click', function() {
     if (qty < 10) { qty++; document.getElementById('qty-display').value = qty; updatePrice(); }
   });
 
-  document.getElementById('submit-btn').addEventListener('click', () => {
-    const required = ['name','email','address1','city','state','zip'];
-    let valid = true;
-    required.forEach(id => {
-      const el = document.getElementById(id);
+  document.getElementById('submit-btn').addEventListener('click', function() {
+    var ids = ['name','email','address1','city','state','zip'];
+    var valid = true;
+    ids.forEach(function(id) {
+      var el = document.getElementById(id);
       if (!el.value.trim()) { el.style.borderColor = '#e05050'; valid = false; }
-      else el.style.borderColor = '';
+      else { el.style.borderColor = ''; }
     });
     if (!valid) { alert('Please fill in all required fields before continuing to PayPal.'); return; }
 
-    const name     = document.getElementById('name').value.trim();
-    const email    = document.getElementById('email').value.trim();
-    const addr1    = document.getElementById('address1').value.trim();
-    const addr2    = document.getElementById('address2').value.trim();
-    const city     = document.getElementById('city').value.trim();
-    const state    = document.getElementById('state').value.trim();
-    const zip      = document.getElementById('zip').value.trim();
+    var name   = document.getElementById('name').value.trim();
+    var email  = document.getElementById('email').value.trim();
+    var addr1  = document.getElementById('address1').value.trim();
+    var addr2  = document.getElementById('address2').value.trim();
+    var city   = document.getElementById('city').value.trim();
+    var state  = document.getElementById('state').value.trim();
+    var zip    = document.getElementById('zip').value.trim();
 
-    const addrLine = [addr1, addr2].filter(Boolean).join(', ');
-    const note = `Ship to: ${name} | ${addrLine}, ${city}, ${state} ${zip} | Email: ${email} | Qty: ${qty}`;
+    var addrLine = addr2 ? addr1 + ', ' + addr2 : addr1;
+    var note = 'Ship to: ' + name + ' | ' + addrLine + ', ' + city + ', ' + state + ' ' + zip + ' | Email: ' + email + ' | Qty: ' + qty;
 
-    // Update PayPal form fields
-    document.getElementById('paypal-cust
+    document.getElementById('paypal-custom').value = note;
+    document.querySelector('[name="amount"]').value = (PRICE * qty).toFixed(2);
+    document.getElementById('paypal-form').submit();
+  });
+</script>-e 
+</body>
+</html>
