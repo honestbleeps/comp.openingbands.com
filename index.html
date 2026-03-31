@@ -595,12 +595,12 @@
       </div>
 
       <div class="paypal-instructions">
-        <p>Click the button below to send <strong>$10.00</strong> via PayPal to <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2743484946534267485742494e494045464943540944484a">[email&#160;protected]</a></strong>. Your shipping address above will be included in the payment notes automatically.</p>
+        <p>Click the button below to send <strong>$10.00</strong> via PayPal to <strong>donate&#64;openingbands.com</strong>. Your shipping address above will be included in the payment notes automatically.</p>
       </div>
 
       <div id="paypal-btn-wrap">
         <form action="https://www.paypal.com/donate" method="post" target="_blank" id="paypal-form">
-          <input type="hidden" name="business" value="donate@openingbands.com" />
+          <input type="hidden" name="business" id="paypal-business" value="" />
           <input type="hidden" name="item_name" value="OpeningBands Compilation CD" />
           <input type="hidden" name="amount" value="10.00" />
           <input type="hidden" name="currency_code" value="USD" />
@@ -630,7 +630,10 @@
   &copy; 2026 OpeningBands.com &bull; All rights reserved
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
+  // Set PayPal email via JS to prevent Cloudflare email obfuscation
+  document.getElementById('paypal-business').value = ['donate','openingbands.com'].join('@');
+
   const PRICE = 10.00;
 
   let qty = 1;
