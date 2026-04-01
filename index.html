@@ -464,7 +464,7 @@
   <p class="hero-eyebrow">Limited Pressing &bull; While Supplies Last</p>
   <h1>The <span>Opening Bands</span><br>Compilation</h1>
   <p>17 tracks. Underground artists from Champaign-Urbana, captured in 2003. One CD you'll actually play start to finish.</p>
-  <div class="badge">$10 — Shipping Included</div>
+  <div class="badge">Name Your Price — $8 Minimum, Shipping Included</div>
 </section>
 
 <!-- TRACKLIST -->
@@ -517,7 +517,7 @@
           <strong>OpeningBands Compilation Vol. 1</strong>
           <span>Physical CD &bull; Ships in 5–7 business days</span>
         </div>
-        <div class="order-price" id="price-display">$10.00</div>
+        <div class="order-price"><span style="font-size:1.1rem;color:var(--gray);">$</span><input type="number" id="price-display" value="10" min="8" step="1" style="background:none;border:none;border-bottom:2px solid var(--blue);color:var(--accent);font-family:'Bebas Neue',sans-serif;font-size:2rem;width:80px;outline:none;padding:0 4px;" /></div>
       </div>
 
       <!-- Quantity -->
@@ -595,7 +595,11 @@
       </div>
 
       <div class="paypal-instructions">
-        <p>Click the button below to send <strong>$10.00</strong> via PayPal to <strong>donate&#64;openingbands.com</strong>. Your shipping address above will be included in the payment notes automatically.</p>
+        <p>Donate what you'd like — <strong>minimum $8</strong> — via PayPal to <strong>donate&#64;openingbands.com</strong>. Shipping is included. Your address above will be sent along with the payment automatically.</p>
+      </div>
+
+      <div class="paypal-instructions" style="margin-bottom:20px;">
+        <p>Here's where your donation goes: shipping runs about <strong>$5</strong> including the cost of a media mailer, the CD itself costs around <strong>$2</strong> to produce, and I still need to print and affix labels for each order. The $8 minimum covers costs — anything above that is appreciated and helps cover time and costs!</p>
       </div>
 
       <div id="paypal-btn-wrap">
@@ -608,12 +612,12 @@
           <input type="hidden" name="return" value="" />
           <input type="hidden" name="no_recurring" value="1" />
           <button type="button" class="btn-submit" id="submit-btn">
-            Complete Order — $10.00 via PayPal
+            Donate via PayPal
           </button>
         </form>
       </div>
 
-      <p class="fine-print">You'll be taken to PayPal to complete your $10 payment. Your shipping address will be sent along in the order notes.</p>
+      <p class="fine-print">You'll be taken to PayPal to complete your payment. Your shipping address will be sent along in the order notes.</p>
     </div>
 
     <!-- SUCCESS -->
@@ -634,18 +638,14 @@
   // Set PayPal email via JS to prevent Cloudflare email obfuscation
   document.getElementById('paypal-business').value = ['donate','openingbands.com'].join('@');
 
-  const PRICE = 10.00;
+  const MIN_PRICE = 8.00;
   let qty = 1;
 
-  function updatePrice() {
-    document.getElementById('price-display').textContent = '$' + (PRICE * qty).toFixed(2);
-  }
-
   document.getElementById('qty-minus').addEventListener('click', function() {
-    if (qty > 1) { qty--; document.getElementById('qty-display').value = qty; updatePrice(); }
+    if (qty > 1) { qty--; document.getElementById('qty-display').value = qty; }
   });
   document.getElementById('qty-plus').addEventListener('click', function() {
-    if (qty < 10) { qty++; document.getElementById('qty-display').value = qty; updatePrice(); }
+    if (qty < 10) { qty++; document.getElementById('qty-display').value = qty; }
   });
 
   document.getElementById('submit-btn').addEventListener('click', function() {
@@ -669,10 +669,17 @@
     var addrLine = addr2 ? addr1 + ', ' + addr2 : addr1;
     var note = 'Ship to: ' + name + ' | ' + addrLine + ', ' + city + ', ' + state + ' ' + zip + ' | Email: ' + email + ' | Qty: ' + qty;
 
+    var enteredPrice = parseFloat(document.getElementById('price-display').value);
+    if (isNaN(enteredPrice) || enteredPrice < MIN_PRICE) {
+      alert('Minimum price is $8. Please enter a valid amount.');
+      document.getElementById('price-display').focus();
+      return;
+    }
+
     document.getElementById('paypal-custom').value = note;
-    document.querySelector('[name="amount"]').value = (PRICE * qty).toFixed(2);
+    document.querySelector('[name="amount"]').value = (enteredPrice * qty).toFixed(2);
     document.getElementById('paypal-form').submit();
   });
-</script>-e 
+</script>
 </body>
 </html>
